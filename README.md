@@ -1,4 +1,3 @@
-# ArduinoProjects
 Project 1: Game using Arduino Led Matrix 8x8
            Components: 
                       - Arduino Uno
