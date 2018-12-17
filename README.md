@@ -1,5 +1,5 @@
 Project 1: Game using Arduino Led Matrix 8x8
-           Components: 
+            Components: 
                       - Arduino Uno
                       - beadboard & expansion breadboard
                       - 4 buttons (2 big buttons, 2 small buttons)
