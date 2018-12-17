@@ -1,32 +1,19 @@
 Game using Arduino Led Matrix 8x8
           
   Components: 
-                    
- - Arduino Uno
-                      
- - beadboard & expansion breadboard
-                      
- - 4 buttons (2 big buttons, 2 small buttons)
-                      
- - matrix display 8x8
-                      
- - resistors -> for each button: 10k resitor
-                                  
-             -> for led matrix: 100k resitor
-                                 
-             -> for led: 220 ohm resistor
-                     
- -jumper wires
-                      
- -104 ceramic capacitor (for led matrix)
-                      
- -MAX7219 driver (for led matrix)
-                      
- -10 uF 50V capacitor (for led matrix)
-                      
- -passive buzzer
-                      
- -red light LED
+  * Arduino Uno
+  * beadboard & expansion breadboard
+  * 4 buttons (2 big buttons, 2 small buttons)
+  * matrix display 8x8
+  * resistors: *for each button: 10k resitor
+               *for led matrix: 100k resitor
+               *for led: 220 ohm resistor
+  * jumper wires                  
+  * 104 ceramic capacitor (for led matrix)
+  * MAX7219 driver (for led matrix)
+  * 10 uF 50V capacitor (for led matrix)
+  * passive buzzer
+  * red light LED
  
                    
              What is the game about? 
