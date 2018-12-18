@@ -5,7 +5,7 @@ Game using Arduino Led Matrix 8x8
   * beadboard & expansion breadboard
   * 4 buttons (2 big buttons, 2 small buttons)
   * matrix display 8x8
-  * resistors: for each button: 10k resitor, for led matrix: 100k resitor, for led: 220 ohm resistor
+  * resistors: each button 10k resitor;  led matrix 100k resitor; LED 220 ohm resistor;
   * jumper wires                  
   * 104 ceramic capacitor (for led matrix)
   * MAX7219 driver (for led matrix)
