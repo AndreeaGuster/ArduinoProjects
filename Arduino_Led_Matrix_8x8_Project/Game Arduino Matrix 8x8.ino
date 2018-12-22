@@ -152,7 +152,7 @@ boolean Spaceship::canMoveLeft() {
 }
 
 boolean Spaceship::canMoveRight() {
-  return (coordX < (SIZE_MATRIX - 1 )&& (millis() - lastMovementTime) > movementSpeed);
+  return (coordX < (SIZE_MATRIX - 2) && (millis() - lastMovementTime) > movementSpeed);
 }
 
 boolean Spaceship::canShoot() { //if current time - the last time the gun was loaded/ the last time we fired > the speed of reloading a gun, you are allowed to shoot again
@@ -199,7 +199,7 @@ void Spaceship::moveLeft() {
 }
 
 void Spaceship::moveRight() {
-  if (coordX < 6) {
+  if (coordX < SIZE_MATRIX) {
     coordX += 1;
   }
   lastMovementTime = millis();
@@ -216,7 +216,7 @@ class Meteor {
     int coordX;
     int coordY = SIZE_MATRIX - 1;  // Always starts from the top part of the screen
 
-    int movementSpeed = 2000;
+    int movementSpeed = 3000;
 
     boolean canMove();
     void moveForward();
