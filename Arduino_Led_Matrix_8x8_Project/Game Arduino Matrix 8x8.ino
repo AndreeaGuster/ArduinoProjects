@@ -2,10 +2,10 @@
 
 #define MAX_NUMBER_OF_ROCKETS  20        /* ROCKETS */
 #define ALL_ROCKETS_HAVE_BEEN_USED -1
-#define MAX_NUMBER_OF_METEORS 64         /* METEORS */
-#define ALL_MOTEORS_HAVE_BEEN_USED -1                    
+#define MAX_NUMBER_OF_METEORS 64         /* METEORS */ //64
+#define ALL_MOTEORS_HAVE_BEEN_USED -1
 #define SIZE_MESSAGE_START 15         /* size of string "START NEW GAME" */
-#define SIZE_MESSAGE_GAME_OVER 10     /* size of string "GAME OVER" */
+#define SIZE_MESSAGE_GAME_OVER 19     /* size of string "GAME OVER" */
 #define SIZE_MATRIX 8                 /* number of rows = 8, number of columns = 8 */
 #define HEARTS 3                     /* number of lives for a game*/
 
@@ -16,16 +16,17 @@ int buzzerPin = 9,           /* BUZZER */
     rightButton = A3,        /* BUTTON */
     ledPin = 13,             /* LED - the number of the LED pin */
     lives = HEARTS;          /* the player starts the game with 3 lives */
-
+int finalScore;
+    
 boolean GAME_OVER = true;    //state of game
 
 LedControl lc = LedControl(12, 11, 10, 1);  /* LED MATRIX */
-                                            /* DIN, CLK, LOAD, No. DRIVER
-                                               pin 12 is connected to the MAX7219 pin 1
-                                               pin 11 is connected to the CLK pin 13
-                                               pin 10 is connected to LOAD pin 12
-                                               1 as we are only using 1 MAX7219
-                                               */
+/* DIN, CLK, LOAD, No. DRIVER
+   pin 12 is connected to the MAX7219 pin 1
+   pin 11 is connected to the CLK pin 13
+   pin 10 is connected to LOAD pin 12
+   1 as we are only using 1 MAX7219
+*/
 
 /******************** MESSAGES ************************/
 int gameOverMessage[SIZE_MESSAGE_GAME_OVER][SIZE_MATRIX] = {
@@ -39,6 +40,15 @@ int gameOverMessage[SIZE_MESSAGE_GAME_OVER][SIZE_MATRIX] = {
   {0x00, 0x7c, 0x40, 0x78, 0x40, 0x40, 0x7c, 0x00}, // E
   {0x00, 0x30, 0x48, 0x48, 0x70, 0x48, 0x44, 0x00}, // R
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //  (space)
+  {0x00, 0x3c, 0x40, 0x38, 0x04, 0x44, 0x38, 0x00}, // S
+  {0x00, 0x38, 0x44, 0x40, 0x40, 0x44, 0x38, 0x00}, // C
+  {0x00, 0x38, 0x44, 0x44, 0x44, 0x44, 0x38, 0x00}, // O
+  {0x00, 0x30, 0x48, 0x48, 0x70, 0x48, 0x44, 0x00}, // R
+  {0x00, 0x7c, 0x40, 0x78, 0x40, 0x40, 0x7c, 0x00}, // E
+  {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //  (space)
+  {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //  (space)
+  {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //  (space)
+  {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}  //  (space)
 };
 
 int startNewGameMessage[SIZE_MESSAGE_START][SIZE_MATRIX] = {
@@ -56,7 +66,20 @@ int startNewGameMessage[SIZE_MESSAGE_START][SIZE_MATRIX] = {
   {0x00, 0x38, 0x44, 0x7c, 0x44, 0x44, 0x44, 0x00}, // A
   {0x00, 0x44, 0x6c, 0x54, 0x44, 0x44, 0x44, 0x00}, // M
   {0x00, 0x7c, 0x40, 0x78, 0x40, 0x40, 0x7c, 0x00}, // E
-  {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //  (space)
+  {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00} //  (space)
+};
+
+int digits[10][SIZE_MATRIX] = {
+  {0x18, 0x24, 0x24, 0x24, 0x24, 0x24, 0x18, 0x00}, // 0
+  {0x00, 0x08, 0x18, 0x28, 0x08, 0x08, 0x3e, 0x00}, // 1
+  {0x00, 0x18, 0x24, 0x24, 0x08, 0x10, 0x3e, 0x00}, // 2
+  {0x00, 0x18, 0x24, 0x04, 0x08, 0x04, 0x24 , 0x18}, // 3
+  {0x00, 0x10, 0x10, 0x10, 0x1c, 0x04, 0x04, 0x00}, // 4
+  {0x00, 0x3c, 0x20, 0x38, 0x04, 0x04, 0x04, 0x38}, // 5
+  {0x00, 0x18, 0x20, 0x20, 0x38, 0x24, 0x24, 0x18}, // 6
+  {0x00, 0x78, 0x08, 0x08, 0x3c, 0x08, 0x08, 0x08}, // 7
+  {0x18, 0x24, 0x24, 0x18, 0x24, 0x24, 0x18, 0x00}, // 8
+  {0x18, 0x24, 0x24, 0x1c, 0x04, 0x04, 0x24, 0x18}  // 9
 };
 
 
@@ -128,8 +151,6 @@ class Spaceship {
     int movementSpeed;
     int gunReloadingSpeed;
 
-    int score = 0;
-
     boolean canMoveLeft();
     boolean canMoveRight();
     boolean canShoot();
@@ -141,7 +162,7 @@ class Spaceship {
     void shootLeft();
     void shootRight();
 
-    ~Spaceship(){    //constructor
+    ~Spaceship() {   //constructor
       lastMovementTime = 0;
       lastGunReloadingTime = 0;
     }
@@ -179,7 +200,7 @@ void Spaceship::shootRight() {
     activeRockets[rocketID].coordY = 2;
     activeRockets[rocketID].updateTime = millis();
   }
-  
+
   lastGunReloadingTime = millis();  //update time, last shoot/fire
 }
 
@@ -199,7 +220,7 @@ void Spaceship::moveLeft() {
 }
 
 void Spaceship::moveRight() {
-  if (coordX < SIZE_MATRIX) {
+  if (coordX < SIZE_MATRIX - 2) {
     coordX += 1;
   }
   lastMovementTime = millis();
@@ -234,7 +255,6 @@ boolean Meteor::canMove() {
 void Meteor::moveForward() {
   int newCoordX = coordX + random(1);  // Move +1 forward or do not move at all
   int newCoordY = coordY + random(2) - 1;  // Move left, right or do not move at all
-
   boolean isNewPositionOccupied = false;
   Meteor meteor;
 
@@ -262,7 +282,7 @@ void createMeteor() {
   }
 
   Meteor meteor;
-  meteor.coordX = random(SIZE_MATRIX);  //get a random number between 0 and 8
+  meteor.coordX = random(SIZE_MATRIX);  //get a random number between 0 and 7
 
   for (int meteorID = 0; meteorID < MAX_NUMBER_OF_METEORS; meteorID++) {
     if (!occupiedMeteorPlace[meteorID]) {
@@ -291,6 +311,20 @@ void drawMeteors() {
   }
 }
 
+void checkIfMeteorTouchedGround(){  //if meteor touches ground, the whole column disappears 
+  for (int meteorID = 0; meteorID < MAX_NUMBER_OF_METEORS; meteorID++){
+     Meteor meteor = liveMeteors[meteorID];
+     
+     if ( occupiedMeteorPlace[meteorID] && meteor.coordY < 1 ){
+        occupiedMeteorPlace[meteorID] = false;
+        for(int meteorCol = 0; meteorCol < MAX_NUMBER_OF_METEORS; meteorCol++){
+          if(liveMeteors[meteorCol].coordX == meteor.coordX)
+             occupiedMeteorPlace[meteorCol] = false;
+        }
+     }   //end if
+  }  //end for
+}
+
 void checkIfMeteorTouchedSpaceship() {
   for (int meteorID = 0; meteorID < MAX_NUMBER_OF_METEORS; meteorID++) {
     Meteor meteor = liveMeteors[meteorID];
@@ -299,27 +333,38 @@ void checkIfMeteorTouchedSpaceship() {
       lives--;
       blinkScreen(4);
       delay(200);
-      
-      if(lives){     //if you still have lives, resetGame
-         resetGame();
+
+      if (lives) {   //if you still have lives, resetGame
+        resetGame();
       }
-      else{  
-          boolean PLAY_SOUND = true;   /* BUZZER -> send tune if game is over */
-          if (PLAY_SOUND == true) {
-             makeBeep(1, 1, 220);  //frequency = 220
-             makeBeep(5, 1, 440); //frequency = 440
-             makeBeep(1, 1, 660); //frequency = 660
+      else { //when game is over, no more matches
+        boolean PLAY_SOUND = true;   /* BUZZER -> send tune if match is over */
+        if (PLAY_SOUND == true) {
+          makeBeep(1, 1, 220);  //frequency = 220
+          makeBeep(5, 1, 440); //frequency = 440
+          makeBeep(1, 1, 660); //frequency = 660
+        }
+        PLAY_SOUND = false;
+        GAME_OVER = true;  //if there are no more lives, send tune and print "game over"
+
+        if (finalScore < 10) {
+          for (int row = 1; row < SIZE_MATRIX; row++)
+            gameOverMessage[SIZE_MESSAGE_GAME_OVER - 3][SIZE_MATRIX - 1 - row] = digits[finalScore][SIZE_MATRIX - 1 - row]; //SIZE_MATRIX - 1- row
+        }
+        else {
+          for (int row = 0; row < SIZE_MATRIX; row++) { //the overallScore can be maximum 60 points, because we  have 20 rockets, 20 * 3 lives = 60 points
+            gameOverMessage[SIZE_MESSAGE_GAME_OVER - 3][SIZE_MATRIX - 1 - row] = digits[finalScore / 100][SIZE_MATRIX - 1 - row];
+            gameOverMessage[SIZE_MESSAGE_GAME_OVER - 2][SIZE_MATRIX - 1 - row] = digits[finalScore / 10 % 10][SIZE_MATRIX - 1 - row];
+            gameOverMessage[SIZE_MESSAGE_GAME_OVER - 1][SIZE_MATRIX - 1 - row] = digits[finalScore % 10][SIZE_MATRIX - 1 - row];
           }
-          PLAY_SOUND = false;
-          GAME_OVER = true;  //if there are no more lives, send tune and print "game over"
-      }
-    }
-  }
+        }
+      } //end else
+    } //end if
+  } //end for
 }
 
 
-
-/******************** GAME ******************************/
+/********************* GAME ***********************************/
 byte currentGrid[SIZE_MATRIX] = {};
 byte meteorGrid[SIZE_MATRIX] = {};
 byte EMPTY_GRID[SIZE_MATRIX] = {B00000000,   //blank matrix
@@ -331,7 +376,7 @@ byte EMPTY_GRID[SIZE_MATRIX] = {B00000000,   //blank matrix
                                 B00000000,
                                 B00000000,
                                };
-int gameSpeed = 500;
+int gameSpeed = 2000;
 
 void drawGrid(byte *grid) {
   for (int row = 0; row < SIZE_MATRIX; row++) {
@@ -382,20 +427,23 @@ void checkIfSpaceshipHitMeteor() {
 
         if (occupiedMeteorPlace[meteorID] && rocket.doesHitTarget(meteor.coordX, meteor.coordY)) {
           occupiedMeteorPlace[meteorID] = false;
+          finalScore++;  //if the rocket hits a meteor, you score one point
         }
       } // meteor loop end
     }
   }  // rocket loop end
 }
 
+
+
 void resetGame() {
   boolean PLAY_SOUND = true;  /* BUZZER */
-  if (PLAY_SOUND == true){
-    makeBeep(5, 1, 440);  //frequency = 440 
-    makeBeep(1, 1, 660); //frequency = 660 
+  if (PLAY_SOUND == true) {
+    makeBeep(5, 1, 440);  //frequency = 440
+    makeBeep(1, 1, 660); //frequency = 660
   }
   PLAY_SOUND = false;
-  
+
   // Set up default position for the spaceship
   spaceship.coordX = 4;  //middle point of spacehip symbol is located on position 4 on the LED MATRIX
   spaceship.movementSpeed = 50;  // The lower - the faster.
@@ -411,16 +459,13 @@ void resetGame() {
 }
 
 
-
-/**************************BUZZER****************************/
+/************************* BUZZER *******************************/
 void makeBeep(int intervalSeconds, int howlongSeconds, int freq) {
   delay(intervalSeconds * 1000);
   tone(buzzerPin, freq, howlongSeconds * 1000);
 }
 
-
-
-/***************************SETUP****************************/
+/************** SETUP ********************/
 void setup() {
   Serial.begin(9600);
   /* LED MATRIX */
@@ -436,71 +481,77 @@ void setup() {
   pinMode(leftButton, INPUT);
   pinMode(leftFireButton, INPUT);
   pinMode(rightFireButton, INPUT);
-  pinMode(rightButton, INPUT); 
-  
+  pinMode(rightButton, INPUT);
+
+  for (int row = 0; row < SIZE_MATRIX; row++) { //the overallScore can be maximum 60 points, because we  have 20 rockets, 20 * 3 lives = 60 points => so just 2 characters
+    gameOverMessage[SIZE_MESSAGE_GAME_OVER - 3][SIZE_MATRIX - 1 - row] = gameOverMessage[SIZE_MESSAGE_GAME_OVER - 1][SIZE_MATRIX - 1 - row];
+    gameOverMessage[SIZE_MESSAGE_GAME_OVER - 2][SIZE_MATRIX - 1 - row] = gameOverMessage[SIZE_MESSAGE_GAME_OVER - 1][SIZE_MATRIX - 1 - row];
+  }
   resetGame();
 }
 
+/****************** LOOP ***********************/
 void loop() {
- if(!GAME_OVER){
-  if (isButtonPressed(leftButton) && spaceship.canMoveLeft()) {
-    spaceship.moveLeft();
-  }
-  if (isButtonPressed(rightButton) && spaceship.canMoveRight()) {
-    spaceship.moveRight();
-  }
-  if (isButtonPressed(leftFireButton) && spaceship.canShoot()) {
-    spaceship.shootLeft();
-  }
-  if (isButtonPressed(rightFireButton) && spaceship.canShoot()) {
-    spaceship.shootRight();
-  }
-     
-  if (random(10) < 3){
-    createMeteor();
-  }
+  if (!GAME_OVER) {
+    if (isButtonPressed(leftButton) && spaceship.canMoveLeft()) {
+      spaceship.moveLeft();
+    }
+    if (isButtonPressed(rightButton) && spaceship.canMoveRight()) {
+      spaceship.moveRight();
+    }
+    if (isButtonPressed(leftFireButton) && spaceship.canShoot()) {
+      spaceship.shootLeft();
+    }
+    if (isButtonPressed(rightFireButton) && spaceship.canShoot()) {
+      spaceship.shootRight();
+    }
 
-  memcpy(currentGrid, EMPTY_GRID, SIZE_MATRIX);  /* I used memcpy because: If I use drawGrid(EMPTY_GRID) function,
-                                                  * and then  drawGrid(currentGrid) function, we get
-                                                  * a turn on - turn off light effect, and we don't want that*/
-  drawSpaceship(spaceship.coordX);
-  drawGrid(currentGrid);
-  drawRockets();
-  drawMeteors();
+    if (random(10) < 3) {
+      createMeteor();
+    }
 
-  checkIfMeteorTouchedSpaceship();
-  checkIfSpaceshipHitMeteor();
- }
- else{   
-    if(!lives){ //if game is over (there are no more lives)
-     for (int i = 0; i < SIZE_MESSAGE_GAME_OVER; i++) {
+    memcpy(currentGrid, EMPTY_GRID, SIZE_MATRIX);  /*I used memcpy because: If I use drawGrid(EMPTY_GRID) function,
+                                           and then  drawGrid(currentGrid) function, we get
+                                           a turn on - turn off light effect, and we don't want that*/
+    drawSpaceship(spaceship.coordX);
+    drawGrid(currentGrid);
+    drawRockets();
+    drawMeteors();
+
+    checkIfMeteorTouchedSpaceship();
+    checkIfMeteorTouchedGround();
+    checkIfSpaceshipHitMeteor();
+  }
+  else {                                                                    //if game is over (there are no more lives)
+    if (!lives) {
+      for (int i = 0; i < SIZE_MESSAGE_GAME_OVER; i++) {
         for (int row = 0; row < SIZE_MATRIX; row++) {
-           lc.setColumn(0, row, gameOverMessage[i][SIZE_MATRIX - 1 - row]);
+          lc.setColumn(0, row, gameOverMessage[i][SIZE_MATRIX - 1 - row]);
         }
-        //if you press leftButton and rightButton, the game starts again
-        if (isButtonPressed(leftButton) && isButtonPressed(rightButton)){
+
+        if (isButtonPressed(leftButton) && isButtonPressed(rightButton)) {  //if you press leftButton and rightButton, the game starts again
+          GAME_OVER = false;
+          lives = HEARTS + 1;
+          finalScore = 0;  //reset score
+          blinkScreen(4);
+          break;
+        }
+        delay(400);
+      }
+    }
+    else {
+      for (int i = 0; i < SIZE_MESSAGE_START; i++) {  //if there are 3 lives, it means the game just started, so we don't print game over message, we print "start new game" message
+        for (int row = 0; row < SIZE_MATRIX; row++) {
+          lc.setColumn(0, row, startNewGameMessage[i][SIZE_MATRIX - 1 - row]);
+        }
+        if (isButtonPressed(leftButton) && isButtonPressed(rightButton)) {  //if you press leftButton and rightButton, the game starts
           GAME_OVER = false;
           lives = HEARTS;
           blinkScreen(4);
-          break;   
+          break;
         }
         delay(400);
-     }  
-    }
-    else{  //if there are 3 lives, it means the game just started, so we don't print game over message
-      for (int i = 0; i < SIZE_MESSAGE_START; i++) {
-         for (int row = 0; row < SIZE_MATRIX; row++) {
-            lc.setColumn(0, row, startNewGameMessage[i][SIZE_MATRIX - 1 - row]);
-         }
-         //if you press leftButton and rightButton in the same time, the game starts 
-         if (isButtonPressed(leftButton) && isButtonPressed(rightButton)){
-            GAME_OVER = false;
-            lives = HEARTS + 1;
-            blinkScreen(4);
-            break;
-        } 
-        delay(400);
       }
-    }    
+    }
   }
- }
+}
