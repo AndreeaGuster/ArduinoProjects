@@ -4,10 +4,10 @@
 #define ALL_ROCKETS_HAVE_BEEN_USED -1
 #define MAX_NUMBER_OF_METEORS 64         /* METEORS */ //64
 #define ALL_MOTEORS_HAVE_BEEN_USED -1
-#define SIZE_MESSAGE_START 15         /* size of string "START NEW GAME" */
-#define SIZE_MESSAGE_GAME_OVER 19     /* size of string "GAME OVER" */
-#define SIZE_MATRIX 8                 /* number of rows = 8, number of columns = 8 */
-#define HEARTS 3                     /* number of lives for a game*/
+#define SIZE_MESSAGE_START 15          /* size of string "START NEW GAME" */
+#define SIZE_MESSAGE_GAME_OVER 19      /* size of string "GAME OVER" */
+#define SIZE_MATRIX 8                  /* number of rows = 8, number of columns = 8 */
+#define HEARTS 3                       /* number of lives for a game*/
 
 int buzzerPin = 9,           /* BUZZER */
     rightFireButton = A0,    /* BUTTON */
@@ -511,18 +511,18 @@ void loop() {
     }
 
     memcpy(currentGrid, EMPTY_GRID, SIZE_MATRIX);  /*I used memcpy because: If I use drawGrid(EMPTY_GRID) function,
-                                           and then  drawGrid(currentGrid) function, we get
-                                           a turn on - turn off light effect, and we don't want that*/
+                                                    *and then  drawGrid(currentGrid) function, we get
+                                                    *a turn on - turn off light effect, and we don't want that*/
     drawSpaceship(spaceship.coordX);
     drawGrid(currentGrid);
     drawRockets();
     drawMeteors();
 
     checkIfMeteorTouchedSpaceship();
-    checkIfMeteorTouchedGround();
+    checkIfMeteorTouchedGround();   //if meteor touches the ground, the whole column of meteors disappear
     checkIfSpaceshipHitMeteor();
   }
-  else {                                                                    //if game is over (there are no more lives)
+  else {        //if game is over (there are no more lives)
     if (!lives) {
       for (int i = 0; i < SIZE_MESSAGE_GAME_OVER; i++) {
         for (int row = 0; row < SIZE_MATRIX; row++) {
