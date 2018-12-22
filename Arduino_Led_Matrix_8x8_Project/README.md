@@ -16,6 +16,7 @@ Game using Arduino Led Matrix 8x8
                    
              What is the game about? 
                   -Meteors are moving towards our Spaceship, in order to survive we can shoot them using our limited number of Rockets.
+                  -If a rocket hits a meteor, your number of points increases
                   -If a meteors touches the Spaceship, the crew dies and you lose the game.
                   -Because it's hard to play this game, we thought it's fair to give you 3 lives. That means you have 3 chances to save the people that live on the Spaceship.
                   -Good luck! You will need it :) .
