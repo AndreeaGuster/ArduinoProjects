@@ -39,6 +39,7 @@ Game using Arduino Led Matrix 8x8
                   -you will see that at the buttom of the display there is a line with 2 points, that is our Spaceship!
                   -you can move the Spaceship to the left or to the right
                   -the meteors are at the top of the display. You better shoot them quickly 'cause they are coming at you!
+                  -once a meteor touches the ground, the hole column of meteors disappears
                   -once a meteor hits the Spaceship, you lose a life
                   -if all your lives are gone, you lost the game :(.
                   
