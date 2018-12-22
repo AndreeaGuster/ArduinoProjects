@@ -59,6 +59,7 @@ int startNewGameMessage[SIZE_MESSAGE_START][SIZE_MATRIX] = {
   {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //  (space)
 };
 
+
 /******************** ROCKETS ************************/
 struct Rocket {
   int coordX;
@@ -317,6 +318,7 @@ void checkIfMeteorTouchedSpaceship() {
 }
 
 
+
 /******************** GAME ******************************/
 byte currentGrid[SIZE_MATRIX] = {};
 byte meteorGrid[SIZE_MATRIX] = {};
@@ -386,12 +388,6 @@ void checkIfSpaceshipHitMeteor() {
   }  // rocket loop end
 }
 
-/*BUZZER*/
-void makeBeep(int intervalSeconds, int howlongSeconds, int freq) {
-  delay(intervalSeconds * 1000);
-  tone(buzzerPin, freq, howlongSeconds * 1000);
-}
-
 void resetGame() {
   boolean PLAY_SOUND = true;  /* BUZZER */
   if (PLAY_SOUND == true){
@@ -414,7 +410,17 @@ void resetGame() {
   }
 }
 
-/*SETUP*/
+
+
+/**************************BUZZER****************************/
+void makeBeep(int intervalSeconds, int howlongSeconds, int freq) {
+  delay(intervalSeconds * 1000);
+  tone(buzzerPin, freq, howlongSeconds * 1000);
+}
+
+
+
+/***************************SETUP****************************/
 void setup() {
   Serial.begin(9600);
   /* LED MATRIX */
@@ -449,14 +455,14 @@ void loop() {
   if (isButtonPressed(rightFireButton) && spaceship.canShoot()) {
     spaceship.shootRight();
   }
-
+     
   if (random(10) < 3){
     createMeteor();
   }
 
-  memcpy(currentGrid, EMPTY_GRID, SIZE_MATRIX);  /*I used memcpy because: If I use drawGrid(EMPTY_GRID) function,
-                                           and then  drawGrid(currentGrid) function, we get
-                                           a turn on - turn off light effect, and we don't want that*/
+  memcpy(currentGrid, EMPTY_GRID, SIZE_MATRIX);  /* I used memcpy because: If I use drawGrid(EMPTY_GRID) function,
+                                                  * and then  drawGrid(currentGrid) function, we get
+                                                  * a turn on - turn off light effect, and we don't want that*/
   drawSpaceship(spaceship.coordX);
   drawGrid(currentGrid);
   drawRockets();
@@ -486,7 +492,7 @@ void loop() {
          for (int row = 0; row < SIZE_MATRIX; row++) {
             lc.setColumn(0, row, startNewGameMessage[i][SIZE_MATRIX - 1 - row]);
          }
-         //if you press leftButton and rightButton, the game starts 
+         //if you press leftButton and rightButton in the same time, the game starts 
          if (isButtonPressed(leftButton) && isButtonPressed(rightButton)){
             GAME_OVER = false;
             lives = HEARTS + 1;
