@@ -151,7 +151,7 @@ boolean Spaceship::canMoveLeft() {
 }
 
 boolean Spaceship::canMoveRight() {
-  return (coordX < (SIZE_MATRIX - 2 )&& (millis() - lastMovementTime) > movementSpeed);
+  return (coordX < (SIZE_MATRIX - 1 )&& (millis() - lastMovementTime) > movementSpeed);
 }
 
 boolean Spaceship::canShoot() { //if current time - the last time the gun was loaded/ the last time we fired > the speed of reloading a gun, you are allowed to shoot again
