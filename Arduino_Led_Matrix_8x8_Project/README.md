@@ -1,5 +1,5 @@
 Game using Arduino Led Matrix 8x8
-Link to the video:
+Link to the video: https://www.youtube.com/watch?v=J1pisE5vq_I
 
   Components: 
   * Arduino Uno
