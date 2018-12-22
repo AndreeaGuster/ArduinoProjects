@@ -33,15 +33,17 @@ Game using Arduino Led Matrix 8x8
              
              How does the game work?
                   -you will hear a sound that will let you know a new match starts
-                  -when the game starts, on the display it will appear the text "Start new game"
+                  -when the game starts, on the display it will appear the text 'Start new game'
                   -to start a new game you have to hold and press Right and Left button at the same time
-                  -once you pressed on them, the screen will blink a few times, and you better be ready to destroy same meteors!!
-                  -you will see that at the buttom of the display there is a line with 2 points, that is our Spaceship!
+                  -once you pressed on them, the screen will blink a few times, and you'd better be ready to destroy same meteors!!
+                  -you will see that at the buttom of the display there is a line with 2 'arms', that is our Spaceship!
                   -you can move the Spaceship to the left or to the right
                   -the meteors are at the top of the display. You better shoot them quickly 'cause they are coming at you!
                   -once a meteor touches the ground, the hole column of meteors disappears
                   -once a meteor hits the Spaceship, you lose a life
-                  -if all your lives are gone, you lost the game :(.
+                  -if all your lives are gone, you lost the game :(
+                   a lower tune will be sent; 
+                   the text 'Game over Score <number of ponits>' will appear on display;
                   
                   
                   
