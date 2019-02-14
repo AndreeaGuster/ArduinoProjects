@@ -1,7 +1,8 @@
+# Save the spaceship Arduino Game
 Game using Arduino Led Matrix 8x8
+# See how it's played
 Link to the video: https://www.youtube.com/watch?v=J1pisE5vq_I
-
-  Components: 
+# Components: 
   * Arduino Uno
   * beadboard & expansion breadboard
   * 4 buttons (2 big buttons, 2 small buttons)
@@ -14,6 +15,7 @@ Link to the video: https://www.youtube.com/watch?v=J1pisE5vq_I
   * passive buzzer
   * red light LED
  
+ # Game
                    
              What is the game about? 
                   -Meteors are moving towards our Spaceship, in order to survive we can shoot them using our limited number of Rockets.
