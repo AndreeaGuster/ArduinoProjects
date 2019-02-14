@@ -519,7 +519,7 @@ void loop() {
     drawMeteors();
 
     checkIfMeteorTouchedSpaceship();
-    checkIfMeteorTouchedGround();   //if meteor touches the ground, the whole column of meteors disappear
+    checkIfMeteorTouchedGround();   //if meteor touches the ground, the whole column of meteors disappears
     checkIfSpaceshipHitMeteor();
   }
   else {        //if game is over (there are no more lives)
