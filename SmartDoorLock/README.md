@@ -12,8 +12,8 @@
 
 ## Wairing ##
 ### Relay Module ###
-* GND -> GND pin
-* IN -> ~3 pin
+* GND (ground) -> GND pin
+* IN (low/high output) -> ~3 pin
 * VCC -> 5V pin 
 
 ### RFID-RC522 ###
