@@ -1,5 +1,6 @@
 # Smart Door Lock Arduino Uno #
 ## Components ##
+* Arduino Uno
 * breadboard
 * passive buzzer
 * 2 LEDs (green and red)
@@ -7,7 +8,7 @@
 * 5V Relay Module
 * RFID-RC522 Reader
 * 9V battery
-* jumpers
+* jumper wires
 
 ## Wairing ##
 ### Relay Module ###
