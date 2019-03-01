@@ -3,6 +3,8 @@
 It's a smart securization based project. Using the RFID tag you can open the door lock or not, depending on the configuration of the card. When access is denied the red LED lights up, and warning sound is released. If you have access, the lock opens and the green LED lights up. 
 On both Serial Monitor and LCD a message will be printed to inform you if you have access or not.
 Also, on Serial Monitor you can see what was the time when your card was scanned.
+## Video ##
+Link: https://youtu.be/jBvWtaaC1QA
 ## Components ##
 * Arduino Uno
 * breadboard
