@@ -8,6 +8,7 @@ Link: https://youtu.be/jBvWtaaC1QA
 ## Components ##
 * Arduino Uno
 * breadboard
+* small breadboard
 * passive buzzer
 * 2 LEDs (green and red)
 * DC 12V Cabinet Door Lock Electric Lock Assembly Solenoid 
@@ -15,6 +16,7 @@ Link: https://youtu.be/jBvWtaaC1QA
 * RFID-RC522 Reader
 * 9V battery
 * jumper wires
+* 2 x 9V batterry
 
 ## Wairing ##
 ### Relay Module ###
